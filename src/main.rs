@@ -1,3 +1,5 @@
+extern crate askama;
+extern crate clap;
 use askama::Template;
 use clap::Parser;
 use std::path::PathBuf;
