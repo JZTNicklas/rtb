@@ -5,7 +5,8 @@ authors = ["Nicklas Kaadner <nicklas.kaadner@gmail.com>"]
 license = "MIT"
 description = "A tool for generating React component boilerplate"
 readme = "README.md"
-
+homepage = "https://github.com/JZTNicklas/rtb"
+repository = "https://github.com/JZTNicklas/rtb"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
