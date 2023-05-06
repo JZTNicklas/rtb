@@ -41,16 +41,23 @@ struct CLI {
     /// Overwrite file even if it already exists
     #[arg(short, long)]
     force: bool,
+    /// Generate empty PropTypes type
+    #[arg(short, long)]
+    props: bool,
 }
 #[derive(Template)]
-#[template(path = "component.html")]
-struct ComponentTemplate<'a> {
+#[template(path = "component_without_props.html")]
+struct ComponentWithoutProps<'a> {
+    name: &'a String,
+}
+#[derive(Template)]
+#[template(path = "component_with_props.html")]
+struct ComponentWithProps<'a> {
     name: &'a String,
 }
 
-fn write_template(name: String, base_dir: PathBufDisplay, force: bool) {
+fn write_template(name: String, base_dir: PathBufDisplay, force: bool, props: bool) {
     // Create entire path with file name
-    // TODO: src/components is hard coded
     let mut path = PathBuf::from(base_dir.0);
     path.push(format!("{}.tsx", &name));
 
@@ -67,13 +74,31 @@ fn write_template(name: String, base_dir: PathBufDisplay, force: bool) {
 
     // File already exists in folder. Required -f or --force to continue
     if path.exists() && !force {
-        println!("File already exists. Run with -f or --force to overwrite.");
+        println!("File already exists. Run with -f or --force to override.");
         return;
     }
 
+    let component_name: Vec<&str> = name.split("/").collect();
     // Create template and write to file
-    let component = ComponentTemplate { name: &name }; // Create template
-    let res = std::fs::write(path, component.render().unwrap());
+    let res = match props {
+        true => std::fs::write(
+            path,
+            ComponentWithProps {
+                name: &component_name.first().unwrap().to_string(),
+            }
+            .render()
+            .unwrap(),
+        ),
+        _ => std::fs::write(
+            path,
+            ComponentWithoutProps {
+                name: &component_name.first().unwrap().to_string(),
+            }
+            .render()
+            .unwrap(),
+        ),
+    };
+    // Create template
     match res {
         Ok(_) => println!("OK"),
         Err(e) => println!("{}", e),
@@ -83,5 +108,5 @@ fn write_template(name: String, base_dir: PathBufDisplay, force: bool) {
 fn main() {
     let args = CLI::parse();
 
-    write_template(args.filepath, args.base_dir, args.force)
+    write_template(args.filepath, args.base_dir, args.force, args.props)
 }
