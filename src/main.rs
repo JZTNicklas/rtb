@@ -63,7 +63,6 @@ fn write_template(name: String, base_dir: PathBufDisplay, force: bool, props: bo
 
     // Clone without the file name, to create directory
     let mut dir = path.clone();
-    println!("{:?}", dir);
     dir.pop();
 
     // Create directory
@@ -81,8 +80,6 @@ fn write_template(name: String, base_dir: PathBufDisplay, force: bool, props: bo
 
     let component_name: Vec<&str> = name.split("/").collect();
     // print every element in vector
-
-    println!("{:?}", &component_name);
 
     // Create template and write to file
     let res = match props {
