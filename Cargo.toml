@@ -1,6 +1,6 @@
 [package]
 name = "rtb"
-version = "0.3.1"
+version = "0.3.2"
 authors = ["Nicklas Kaadner <nicklas.kaadner@gmail.com>"]
 license = "MIT"
 description = "A tool for generating React component boilerplate"
